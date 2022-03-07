@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="BookTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2022-03-07T11:34:48" hostname="CHAVI" time="0.039">
+  <properties/>
+  <testcase name="changeAddress()" classname="BookTest" time="0.028"/>
+  <testcase name="getPeopleByHouse()" classname="BookTest" time="0.001"/>
+  <testcase name="deletePerson()" classname="BookTest" time="0.001"/>
+  <testcase name="addPerson()" classname="BookTest" time="0.001"/>
+  <testcase name="getPeopleByStreet()" classname="BookTest" time="0.001"/>
+  <testcase name="getAddressByName()" classname="BookTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
