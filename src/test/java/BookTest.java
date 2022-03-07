@@ -11,6 +11,7 @@ class BookTest {
     Book b = new Book();
     Book.Address adr1 = new Book.Address("Невский пр.", 10, 100);
     Book.Address adr2 = new Book.Address("Приморский пр.", 25, 10);
+    Book.Address adr3 = new Book.Address("Невский пр.", 15, 10);
 
     @Test
     void addPerson() {
@@ -18,6 +19,8 @@ class BookTest {
         b.addPerson("Чаплин", adr1);
         assertEquals(a, b);
         assertFalse(a.addPerson("Чаплин", adr1));
+        a.addPerson("Чаплин", adr2);
+        assertFalse(a.addPerson("Чаплин", adr2));
     }
 
     @Test
@@ -25,6 +28,8 @@ class BookTest {
         a.addPerson("Чаплин", adr1);
         a.deletePerson("Чаплин");
         assertEquals(new Book(), a);
+        assertFalse(a.deletePerson("Чаплин"));
+        a.deletePerson("Чаплин");
         assertFalse(a.deletePerson("Чаплин"));
     }
 
@@ -50,10 +55,12 @@ class BookTest {
         a.addPerson("Чаплин", adr1);
         a.addPerson("Сергиенко", adr1);
         a.addPerson("Жилкина", adr1);
+        a.addPerson("Ким", adr3);
         Set<String> residents = new HashSet<>();
         residents.add("Чаплин");
         residents.add("Сергиенко");
         residents.add("Жилкина");
+        residents.add("Ким");
         assertEquals(residents, a.getPeopleByStreet("Невский пр."));
     }
 
@@ -62,6 +69,7 @@ class BookTest {
         a.addPerson("Чаплин", adr1);
         a.addPerson("Сергиенко", adr1);
         a.addPerson("Жилкина", adr1);
+        a.addPerson("Ким", adr3);
         Set<String> residents = new HashSet<>();
         residents.add("Чаплин");
         residents.add("Сергиенко");
