@@ -7,11 +7,18 @@ public class Book {
         private final int numHouse;
         private final int numFlat;
 
-        public Address(String street, int numHouse, int numFlat) {
+        public Address(String street, Integer numHouse, Integer numFlat) {
             this.street = Objects.requireNonNull(street, "The address is incorrect. Street can't be null");
-            this.numHouse = numHouse;
-            this.numFlat = numFlat;
+            this.numHouse = Objects.requireNonNull(numHouse, "The address is incorrect. House number can't be null");
+            this.numFlat = Objects.requireNonNull(numFlat, "The address is incorrect. Flat number can't be null");
         }
+
+        private void checkException(int numHouse, int numFlat) {
+            if ((numHouse <= 0) || (numFlat <= 0))  {
+                throw new IllegalArgumentException("The address is incorrect");
+            }
+        }
+
 
         public String getStreet() {
             return this.street;
@@ -73,7 +80,7 @@ public class Book {
         }
 
         public Address getAddressByName(String person) {
-            if (book.containsKey(person)) return book.get(person);
+            if (this.book.containsKey(person)) return book.get(person);
             return null;
         }
 
