@@ -7,10 +7,10 @@ public class Book {
         private final int numHouse;
         private final int numFlat;
 
-        public Address(String street, Integer numHouse, Integer numFlat) {
-            this.street = Objects.requireNonNull(street, "The address is incorrect. Street can't be null");
-            this.numHouse = Objects.requireNonNull(numHouse, "The address is incorrect. House number can't be null");
-            this.numFlat = Objects.requireNonNull(numFlat, "The address is incorrect. Flat number can't be null");
+        public Address(String street, int numHouse, int numFlat) {
+            this.street = street;
+            this.numHouse = numHouse;
+            this.numFlat = numFlat;
         }
 
         private void checkException(int numHouse, int numFlat) {

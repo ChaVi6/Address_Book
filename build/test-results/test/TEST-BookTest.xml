@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="BookTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2022-03-11T20:14:49" hostname="CHAVI" time="0.04">
+<testsuite name="BookTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2022-03-11T20:48:35" hostname="CHAVI" time="0.048">
   <properties/>
-  <testcase name="changeAddress()" classname="BookTest" time="0.03"/>
-  <testcase name="getPeopleByHouse()" classname="BookTest" time="0.002"/>
+  <testcase name="changeAddress()" classname="BookTest" time="0.031"/>
+  <testcase name="getPeopleByHouse()" classname="BookTest" time="0.003"/>
   <testcase name="deletePerson()" classname="BookTest" time="0.001"/>
   <testcase name="addPerson()" classname="BookTest" time="0.001"/>
-  <testcase name="getPeopleByStreet()" classname="BookTest" time="0.001"/>
-  <testcase name="getAddressByName()" classname="BookTest" time="0.0"/>
+  <testcase name="getPeopleByStreet()" classname="BookTest" time="0.002"/>
+  <testcase name="getAddressByName()" classname="BookTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
