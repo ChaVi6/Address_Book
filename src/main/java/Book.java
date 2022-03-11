@@ -8,12 +8,10 @@ public class Book {
         private final int numFlat;
 
         public Address(String street, int numHouse, int numFlat) {
-            this.street = street;
+            this.street = Objects.requireNonNull(street, "The address is incorrect. Street can't be null");
             this.numHouse = numHouse;
             this.numFlat = numFlat;
         }
-
-
 
         public String getStreet() {
             return this.street;
@@ -34,85 +32,84 @@ public class Book {
         }
 
         @Override
-        public int hashCode() {
-            return this.street.hashCode() + this.numHouse + this.numFlat;
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Address address = (Address) o;
+            return numHouse == address.numHouse && numFlat == address.numFlat && Objects.equals(street, address.street);
         }
 
         @Override
-        public boolean equals(Object obj) {
-            if (this == obj) return true;
-            if (obj instanceof Address) {
-                Address other = (Address) obj;
-                return this.street.equals(other.street) && this.numHouse == other.numHouse && this.numFlat == other.numFlat;
+        public int hashCode() {
+            return Objects.hash(street, numHouse, numFlat);
+        }
+    }
+
+
+
+        private final Map<String, Address> book;
+
+        public Book(Map<String, Address> book) {
+            this.book = book;
+        }
+
+
+        public boolean addPerson(String person, Address adr) {
+            if (book.containsKey(person)) return false;
+            book.put(person, adr);
+            return true;
+        }
+
+        public boolean deletePerson(String person) {
+            if (!book.containsKey(person)) return false;
+            book.remove(person);
+            return true;
+        }
+
+        public boolean changeAddress(String person, Address adr) {
+            if (!this.book.containsKey(person)) return false;
+            this.book.replace(person, adr);
+            return true;
+        }
+
+        public Address getAddressByName(String person) {
+            if (book.containsKey(person)) return book.get(person);
+            return null;
+        }
+
+        public Set<String> getPeopleByStreet(Address street) {
+            Set<String> result = new HashSet<>();
+            for (String str: this.book.keySet()) {
+                if (book.get(str).getStreet().equals(street.getStreet())) result.add(str);
             }
-            return false;
+            return result;
         }
-    }
 
-
-
-
-    private final HashMap<String, Address> book;
-
-
-    public Book() {
-        this.book = new HashMap<>();
-    }
-
-
-    public boolean addPerson(String person, Address adr) {
-        if (this.book.containsKey(person)) return false;
-        this.book.put(person, adr);
-        return true;
-    }
-
-    public boolean deletePerson(String person) {
-        if (!this.book.containsKey(person) || this.book.isEmpty()) return false;
-        this.book.remove(person);
-        return true;
-    }
-
-    public boolean changeAddress(String person, Address adr) {
-        if (!this.book.containsKey(person) || this.book.isEmpty()) return false;
-        this.book.replace(person, adr);
-        return true;
-    }
-
-    public Address getAddressByName(String person) {
-        return this.book.get(person);
-    }
-
-    public HashSet<String> getPeopleByStreet(String street) {
-        HashSet<String> result = new HashSet<>();
-        for (String str: this.book.keySet()) {
-            Address adr = getAddressByName(str);
-            if (street.equals(adr.getStreet())) result.add(str);
+        public Set<String> getPeopleByHouse(Address house) {
+            Set<String> result = new HashSet<>();
+            for (String str: this.book.keySet()) {
+                if (book.get(str).street.equals(house.getStreet()) && book.get(str).getNumHouse() == house.getNumHouse()) result.add(str);
+            }
+            return result;
         }
-        return result;
-    }
 
-    public HashSet<String> getPeopleByHouse(String street, int house) {
-        HashSet<String> result = new HashSet<String>();
-        for (String s: this.book.keySet()) {
-            Address adr = getAddressByName(s);
-            if (street.equals(adr.getStreet()) && house == adr.getNumHouse()) result.add(s);
+
+        @Override
+        public String toString() {
+            return this.book.toString();
         }
-        return result;
-    }
 
-
-    @Override
-    public String toString() {
-        return this.book.toString();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj instanceof Book) {
-            Book other = (Book) obj;
-            return this.book.equals(other.book);
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Book book1 = (Book) o;
+            return Objects.equals(book, book1.book);
         }
-        return false;
-    }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(book);
+        }
 }
+
