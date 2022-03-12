@@ -7,10 +7,10 @@ public class Book {
         private final int numHouse;
         private final int numFlat;
 
-        public Address(String street, int numHouse, int numFlat) {
-            this.street = street;
-            this.numHouse = numHouse;
-            this.numFlat = numFlat;
+        public Address(String street, Integer numHouse, Integer numFlat) {
+            this.street = Objects.requireNonNull(street, "The address is incorrect. Street must not be null");
+            this.numHouse = Objects.requireNonNull(numHouse, "The address is incorrect. House number must not be null");
+            this.numFlat = Objects.requireNonNull(numFlat, "The address is incorrect. Flat number must not be null");
         }
 
         private void checkException(int numHouse, int numFlat) {
@@ -32,7 +32,6 @@ public class Book {
         public int getNumFlat() {
             return this.numFlat;
         }
-
 
         @Override
         public String toString() {
