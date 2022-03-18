@@ -72,22 +72,21 @@ public class Book {
         }
 
         public Address getAddressByName(String person) {
-            if (this.book.containsKey(person)) return book.get(person);
-            return null;
+            return book.get(person);
         }
 
-        public Set<String> getPeopleByStreet(Address street) {
+        public Set<String> getPeopleByStreet(Address adr) {
             Set<String> result = new HashSet<>();
-            for (String str: this.book.keySet()) {
-                if (book.get(str).getStreet().equals(street.getStreet())) result.add(str);
+            for (Map.Entry<String, Address> entry : this.book.entrySet()) {
+                if (entry.getValue().getStreet().equals(adr.getStreet())) result.add(entry.getKey());
             }
             return result;
         }
 
-        public Set<String> getPeopleByHouse(Address house) {
+        public Set<String> getPeopleByHouse(Address str) {
             Set<String> result = new HashSet<>();
-            for (String str: this.book.keySet()) {
-                if (book.get(str).street.equals(house.getStreet()) && book.get(str).getNumHouse() == house.getNumHouse()) result.add(str);
+            for (Map.Entry<String, Address> entry : this.book.entrySet()) {
+                if (entry.getValue().getStreet().equals(str.getStreet()) && (entry.getValue().getNumHouse() == str.getNumHouse())) result.add(entry.getKey());
             }
             return result;
         }

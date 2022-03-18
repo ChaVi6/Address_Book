@@ -1,4 +1,5 @@
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -8,95 +9,74 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BookTest {
 
+    Book book = new Book(new HashMap<>());
+
+    @BeforeEach
+    void setUp() {
+        assertTrue(book.addPerson("Чаплин", new Book.Address("Невский пр.", 6, 20)));
+        assertTrue(book.addPerson("Сергиенко", new Book.Address("Приморский пр.", 5, 50)));
+        assertTrue(book.addPerson("Жилкина", new Book.Address("Невский пр.", 10, 5)));
+    }
+
     @Test
     void addPerson() {
-        Book book = new Book(new HashMap<>());
-        book.addPerson("Чаплин", new Book.Address("Невский пр.", 6, 20));
-        book.addPerson("Сергиенко", new Book.Address("Приморский пр.", 5, 50));
-        Map<String, Book.Address> addresses = new HashMap<>();
-        addresses.put("Чаплин", new Book.Address("Невский пр.", 6, 20));
-        addresses.put("Сергиенко", new Book.Address("Приморский пр.", 5, 50));
-        assertEquals(book, new Book(addresses));
+        assertFalse(book.addPerson("Сергиенко", new Book.Address("Приморский пр.", 5, 150)));
     }
 
     @Test
     void deletePerson() {
-        Map<String, Book.Address> adr = new HashMap<>();
-        adr.put("Чаплин", new Book.Address("Невский пр.", 6, 20));
-        adr.put("Сергиенко", new Book.Address("Приморский пр.", 5, 50));
-        Book book = new Book(adr);
-        book.deletePerson("Чаплин");
-        book.deletePerson("Сергиенко");
-        Map<String, Book.Address> result = new HashMap<>();
-        assertEquals(book, new Book(result));
+        assertTrue(book.deletePerson("Сергиенко"));
+        assertTrue(book.deletePerson("Жилкина"));
+        assertFalse(book.deletePerson("Шайхайдаров"));
     }
 
     @Test
     void changeAddress() {
-        Map<String, Book.Address> adr1 = new HashMap<>();
-        adr1.put("Чаплин", new Book.Address("Невский пр.", 6, 20));
-        Book book1 = new Book(adr1);
-        book1.changeAddress("Чаплин", new Book.Address("Школьная ул.", 15, 631));
-        Map<String, Book.Address> result1 = new HashMap<>();
-        result1.put("Чаплин", new Book.Address("Школьная ул.", 15, 631));
-        assertEquals(book1, new Book(result1));
-
-        Map<String, Book.Address> adr2 = new HashMap<>();
-        adr2.put("Сергиенко", new Book.Address("Приморский пр.", 5, 50));
-        Book book2 = new Book(adr2);
-        book2.changeAddress("Сергиенко", new Book.Address("наб. реки Фонтанки", 3, 1));
-        Map<String, Book.Address> result2 = new HashMap<>();
-        result2.put("Сергиенко", new Book.Address("наб. реки Фонтанки", 3, 1));
-        assertEquals(book2, new Book(result2));
+        assertTrue(book.deletePerson("Сергиенко"));
+        assertTrue(book.changeAddress("Чаплин", new Book.Address("Невский", 10, 5)));
+        assertTrue(book.changeAddress("Жилкина", new Book.Address("Невский пр.", 6, 20)));
+        assertFalse(book.changeAddress("Сергиенко", new Book.Address("Невский пр.", 6, 20)));
     }
 
     @Test
     void getAddressByName() {
-        Map<String, Book.Address> adr = new HashMap<>();
-        adr.put("Чаплин", new Book.Address("Невский пр.", 6, 20));
-        adr.put("Сергиенко", new Book.Address("наб. реки Фонтанки", 3, 1));
-        Book book = new Book(adr);
-        assertEquals(book.getAddressByName("Чаплин"), new Book.Address("Невский пр.", 6, 20));
-        assertEquals(book.getAddressByName("Сергиенко"), new Book.Address("наб. реки Фонтанки", 3, 1));
+        assertEquals(new Book.Address("Невский пр.", 6, 20), book.getAddressByName("Чаплин"));
+        assertEquals(new Book.Address("Приморский пр.", 5, 50), book.getAddressByName("Сергиенко"));
+        assertEquals(new Book.Address("Невский пр.", 10, 5), book.getAddressByName("Жилкина"));
+        assertNull(book.getAddressByName("Белова"));
     }
 
     @Test
     void getPeopleByStreet() {
-        Book book = new Book(new HashMap<>());
-        book.addPerson("Чаплин", new Book.Address("Невский", 10, 100));
-        book.addPerson("Сергиенко", new Book.Address("Невский", 30, 100));
-        book.addPerson("Жилкина", new Book.Address("Невский", 10, 5));
-        book.addPerson("Ким", new Book.Address("Приморский", 10, 100));
-        book.addPerson("Ли", new Book.Address("Невский", 10, 100));
-        book.addPerson("Шайхайдаров", new Book.Address("Невский", 10, 100));
-        book.deletePerson("Ли");
-        book.changeAddress("Шайхайдаров", new Book.Address("Площадь Восстания", 27, 3));
-        book.changeAddress("Сергиенко", new Book.Address("Невский", 27, 3));
-        Set<String> residents = new HashSet<>();
-        residents.add("Чаплин");
-        residents.add("Сергиенко");
-        residents.add("Жилкина");
-        assertEquals(residents, book.getPeopleByStreet(new Book.Address("Невский", 10, 100)));
+        assertTrue(book.addPerson("Ким", new Book.Address("Приморский пр.", 10, 100)));
+        assertTrue(book.addPerson("Ли", new Book.Address("Невский пр.", 6, 20)));
+        assertTrue(book.addPerson("Шайхайдаров", new Book.Address("Приморский пр.", 5, 50)));
+        assertFalse(book.addPerson("Ким", new Book.Address("Площадь Восстания", 27, 3)));
+        assertFalse(book.addPerson("Чаплин", new Book.Address("Невский пр.", 27, 3)));
+        assertTrue(book.deletePerson("Ли"));
+        assertFalse(book.deletePerson("Чадлин"));
+        assertTrue(book.changeAddress("Шайхайдаров", new Book.Address("Площадь Восстания", 27, 3)));
+        assertTrue(book.changeAddress("Сергиенко", new Book.Address("Невский пр.", 27, 3)));
+        assertFalse(book.changeAddress("Ли", new Book.Address("Невский", 10, 5)));
+        Book.Address adr = new Book.Address("Невский пр.", 10, 100);
+        Set<String> residents = Set.of("Чаплин", "Сергиенко", "Жилкина");
+        assertEquals(residents, book.getPeopleByStreet(adr));
     }
 
     @Test
     void getPeopleByHouse() {
-        Book book = new Book(new HashMap<>());
-        book.addPerson("Чаплин", new Book.Address("Невский", 10, 100));
-        book.addPerson("Сергиенко", new Book.Address("Невский", 30, 100));
-        book.addPerson("Жилкина", new Book.Address("Невский", 10, 5));
-        book.addPerson("Ким", new Book.Address("Приморский", 10, 100));
-        book.addPerson("Ли", new Book.Address("Невский", 10, 100));
-        book.addPerson("Шайхайдаров", new Book.Address("Невский", 10, 100));
-        book.deletePerson("Ким");
-        book.deletePerson("Ли");
-        book.changeAddress("Шайхайдаров", new Book.Address("Невский", 10, 99));
-        book.changeAddress("Сергиенко", new Book.Address("Невский", 27, 3));
-        Set<String> residents = new HashSet<>();
-        residents.add("Чаплин");
-        residents.add("Жилкина");
-        residents.add("Шайхайдаров");
-        assertEquals(residents, book.getPeopleByHouse(new Book.Address("Невский", 10, 100)));
+        assertTrue(book.addPerson("Ким", new Book.Address("Приморский пр.", 10, 100)));
+        assertTrue(book.addPerson("Ли", new Book.Address("Невский пр.", 6, 21)));
+        assertTrue(book.addPerson("Шайхайдаров", new Book.Address("Приморский пр.", 5, 50)));
+        assertFalse(book.addPerson("Ким", new Book.Address("Невский пр.", 6, 20)));
+        assertTrue(book.deletePerson("Ким"));
+        assertFalse(book.deletePerson("Сиргиенко"));
+        assertTrue(book.changeAddress("Шайхайдаров", new Book.Address("Невский пр.", 6, 20)));
+        assertTrue(book.changeAddress("Сергиенко", new Book.Address("Невский пр.", 7, 20)));
+        assertFalse(book.changeAddress("Ким", new Book.Address("Невский пр.", 6, 21)));
+        Book.Address str = new Book.Address("Невский пр.", 6, 100);
+        Set<String> residents = Set.of("Чаплин", "Шайхайдаров", "Ли");
+        assertEquals(residents, book.getPeopleByHouse(str));
     }
 }
 
